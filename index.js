@@ -1,5 +1,6 @@
+//创建了一个Phaser.Game对象的实例并赋值给本地变量game，以此来激活Phaser
 var game = new Phaser.Game(800, 600, Phaser.AUTO, 'invader', { preload: preload, create: create, update: update, render: render });
-
+//加载资产,preload函数里调用game.load来完成
 function preload() {
 
     game.load.image('bullet', 'images/bullet.png');
@@ -28,11 +29,13 @@ var firingTimer = 0;
 var stateText;
 var livingEnemies = [];
 
+//建立一个世界
 function create() {
 
     game.physics.startSystem(Phaser.Physics.ARCADE);
 
     //  The scrolling starfield background
+    // 添加背景
     starfield = game.add.tileSprite(0, 0, 800, 600, 'starfield');
 
     //  Our bullet group
@@ -68,12 +71,14 @@ function create() {
     createAliens();
 
     //  The score
+    // 分数展示
     scoreString = 'Score : ';
     scoreText = game.add.text(10, 10, scoreString + score, { font: '34px Arial', fill: '#fff' });
 
     //  Lives
+    // 还剩几条命
     lives = game.add.group();
-    game.add.text(game.world.width - 100, 10, 'Lives : ', { font: '34px Arial', fill: '#fff' });
+    game.add.text(game.world.width - 100, 10, 'Lives', { font: '34px Arial', fill: '#fff' });
 
     //  Text
     stateText = game.add.text(game.world.centerX,game.world.centerY,' ', { font: '84px Arial', fill: '#fff' });
