@@ -9,6 +9,9 @@ function preload() {
     game.load.image('ship', 'images/player.png');
     game.load.spritesheet('kaboom', 'images/explode.png', 128, 128);
     game.load.image('starfield', 'images/starfield.png');
+    game.load.audio('score_sound', 'music.mp3');//得分的音效
+    game.load.audio('shut', 'short_lazer.mp3');//得分的音效
+    game.load.audio('explode', 'explode.mp3');//得分的音效
 
 }
 
@@ -37,6 +40,12 @@ function create() {
     //  The scrolling starfield background
     // 添加背景
     starfield = game.add.tileSprite(0, 0, 800, 600, 'starfield');
+
+    soundScore = game.add.sound('score_sound');
+    shut = game.add.sound('shut');
+    explode = game.add.sound('explode');
+    
+
 
     //  Our bullet group
     // 玩家的激光炮弹
@@ -98,7 +107,7 @@ function create() {
         ship.angle = 90;
         ship.alpha = 0.4;
     }
-
+    
     //  An explosion pool
     // 添加爆炸的效果
     explosions = game.add.group();
@@ -136,6 +145,7 @@ function createAliens () {
     //  When the tween loops it calls descend
     // 当动画循环时开始下降
     tween.onLoop.add(descend, this);
+    soundScore.play();
 }
 //设置敌人，并添加爆炸的动画
 function setupInvader (invader) {
@@ -178,6 +188,7 @@ function update() {
         if (fireButton.isDown)
         {
             fireBullet();
+            shut.play();
         }
 
         if (game.time.now > firingTimer)
@@ -209,7 +220,7 @@ function collisionHandler (bullet, alien) {
     // 当激光碰到敌人的时候，将两个kill掉
     bullet.kill();
     alien.kill();
-
+    explode.play();
     //  Increase the score
     // 增加分数
     score += 20;
@@ -247,6 +258,7 @@ function enemyHitsPlayer (player,bullet) {
     if (live)
     {
         live.kill();
+        explode.play();
     }
 
     //  And create an explosion :)
